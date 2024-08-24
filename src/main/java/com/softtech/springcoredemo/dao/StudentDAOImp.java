@@ -73,5 +73,60 @@ public class StudentDAOImp implements StudentDAO {
 //		return query.getResultList();
 //	}
 	
+	@Override
+	@Transactional
+	public void updateStudent(Student student) {
+		em.merge(student);
+	}
+
+	// Update
+	@Override
+	@Transactional
+	public void updateStudentFirstName(int id, String FirstName) {
+		Student student = getRecordById(id);
+		student.setFirstName(FirstName);
+		em.merge(student);
+	}
+
+	@Override
+	@Transactional
+	public void updateStudentLastName(int id, String LastName) {
+		Student student = getRecordById(id);
+		student.setLastName(LastName);
+		em.merge(student);
+	}
+
+	@Override
+	@Transactional
+	public void updateStudentEmail(int id, String email) {
+		Student student = getRecordById(id);
+		student.setEmail(email);
+		em.merge(student);
+	}
+
+	@Override
+	@Transactional
+	public int bulkupdateStudentFirstName(String FirstName) {
+		int numRowsUpdated = em.createQuery("Update Student set firstName= '" + FirstName+"'").executeUpdate(); 
+		return numRowsUpdated;
+	}
+
+	@Override
+	@Transactional
+	public int bulkupdateStudentLastName(String LastName) {
+		int numRowsUpdated = em.createQuery("Update Student set lastName= '" + LastName+"'").executeUpdate(); 
+		return numRowsUpdated;
+	}
+
+//	@Override
+//	@Transactional
+//	public void bulkupdateStudentEmail(String email) {
+//		int numRowsUpdated = em.createQuery("Update Student set email= '" + email+"'").executeUpdate(); 
+//		
+//	}
+	
+	
+
+	
 	
 }

@@ -1,6 +1,8 @@
 package com.softtech.springcoredemo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,7 +33,13 @@ public class SpringcoredemoApplication {
 //		readStudents(studentDao,"firstName = 'Abdalrhman' OR lastName = 'Salah' ");
 //		readStudents(studentDao,"order by firstName DESC"); // default asc
 //		readStudents(studentDao,"firstName =","Mohamed");
-		findByEmail(studentDao,"mo@salah.eg");
+//		findByEmail(studentDao,"mo@salah.eg");
+//		Map<String,String> metaData = new HashMap<String,String>();
+//		metaData.put("email", "sad@gad.mad");
+//		metaData.put("lastName", "Ramadan");
+//		updateStudent(studentDao,2,metaData);
+//		updateStudentFirstName(studentDao,2,"Ahmed");
+		bulkupdateStudentLastName(studentDao,"Mahmoud");
 	};
 
 	}
@@ -93,4 +101,33 @@ public class SpringcoredemoApplication {
 //		}
 //		System.out.println("----------------------------");
 //	}
+	
+	// Update
+	public void updateStudent(StudentDAO studentDao,int id ,Map<String, String> MetaData) {
+		System.out.println("----------------------------");
+		String email = MetaData.get("email");
+		String lastName = MetaData.get("lastName");
+		Student student = studentDao.getRecordById(id);
+		student.setEmail(email);
+		student.setLastName(lastName);
+		studentDao.updateStudent(student);
+		System.out.println(student);
+		System.out.println("----------------------------");
+	}
+	
+	public void updateStudentFirstName(StudentDAO studentDao,int id ,String Name) {
+		System.out.println("----------------------------");
+		studentDao.updateStudentFirstName(id,Name);
+		Student stu = studentDao.getRecordById(id);
+		System.out.println(stu);
+		System.out.println("----------------------------");
+	}
+	
+	public void bulkupdateStudentLastName(StudentDAO studentDao,String Name) {
+		System.out.println("----------------------------");
+		int rows = studentDao.bulkupdateStudentLastName(Name);
+		readStudents(studentDao);
+		System.out.println("updated " + rows + " rows");
+		System.out.println("----------------------------");
+	}
 }
