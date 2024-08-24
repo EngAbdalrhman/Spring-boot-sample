@@ -27,4 +27,7 @@ public interface StudentDAO {
 //	void bulkupdateStudentEmail(String email); // email is unique
 
 	// Delete
+	void deleteStudent(int id);
+	public int deleteStudentConditionBased(String condition);
+	int deleteAll();
 }

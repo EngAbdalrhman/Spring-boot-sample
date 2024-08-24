@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.softtech.springcoredemo.entity.Student;
 
 import jakarta.persistence.EntityManager;
-//import jakarta.persistence.Query;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 @Repository
@@ -73,13 +73,15 @@ public class StudentDAOImp implements StudentDAO {
 //		return query.getResultList();
 //	}
 	
+	// Update
+	
 	@Override
 	@Transactional
 	public void updateStudent(Student student) {
 		em.merge(student);
 	}
 
-	// Update
+	
 	@Override
 	@Transactional
 	public void updateStudentFirstName(int id, String FirstName) {
@@ -118,6 +120,8 @@ public class StudentDAOImp implements StudentDAO {
 		return numRowsUpdated;
 	}
 
+	
+
 //	@Override
 //	@Transactional
 //	public void bulkupdateStudentEmail(String email) {
@@ -125,8 +129,38 @@ public class StudentDAOImp implements StudentDAO {
 //		
 //	}
 	
+	// Delete
 	
-
+	@Override
+	@Transactional
+	public void deleteStudent(int id) {
+		Student student = getRecordById(id);
+		em.remove(student);
+	}
 	
+	@Override
+	@Transactional
+	public int deleteStudentConditionBased(String condition) {
+		int numRowsDeleted;
+		try {
+		 numRowsDeleted = em.createQuery("Delete from Student Where " + condition).executeUpdate(); 
+		}
+		catch (Exception e) 
+		{
+			numRowsDeleted = -1;
+		}
+		return numRowsDeleted;
+	}
+	
+	@Override
+	@Transactional
+	public int deleteAll() {
+		int numRowsDeleted = em.createQuery("Delete from Student").executeUpdate(); 
+		// Reset Id Counter
+		Query nativeQuery = em.createNativeQuery("ALTER TABLE student_tracker.student AUTO_INCREMENT = 1");
+		nativeQuery.executeUpdate();
+		System.out.println(nativeQuery);
+		return numRowsDeleted;
+	}
 	
 }

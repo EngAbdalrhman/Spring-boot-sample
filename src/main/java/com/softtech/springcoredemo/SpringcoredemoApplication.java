@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.softtech.springcoredemo.dao.StudentDAO;
-import com.softtech.springcoredemo.dao.StudentDAOImp;
 import com.softtech.springcoredemo.entity.Student;
 
 @SpringBootApplication
@@ -24,7 +23,7 @@ public class SpringcoredemoApplication {
 	public CommandLineRunner commandLineRunner (StudentDAO studentDao) {
 	return runner -> {
 		// ADD DAO Code
-//		createStudent(studentDao);
+		createStudent(studentDao);
 //		readStudent(studentDao,1);
 //		readStudent(studentDao,2);
 //		readStudents(studentDao);
@@ -39,7 +38,11 @@ public class SpringcoredemoApplication {
 //		metaData.put("lastName", "Ramadan");
 //		updateStudent(studentDao,2,metaData);
 //		updateStudentFirstName(studentDao,2,"Ahmed");
-		bulkupdateStudentLastName(studentDao,"Mahmoud");
+//		bulkupdateStudentLastName(studentDao,"Mahmoud");
+//		DeleteStudent(studentDao, 4);
+//		DeleteStudent(studentDao,"firstName = 'Ahmed'");
+//		DeleteAll(studentDao);
+		
 	};
 
 	}
@@ -129,5 +132,29 @@ public class SpringcoredemoApplication {
 		readStudents(studentDao);
 		System.out.println("updated " + rows + " rows");
 		System.out.println("----------------------------");
+	}
+	
+	// Delete
+	
+	public void DeleteStudent(StudentDAO studentDao,int id) 
+	{
+		System.out.println("----------------------------");
+		studentDao.deleteStudent(id);
+		readStudents(studentDao);
+		System.out.println("----------------------------");
+	}
+	
+	public void DeleteStudent(StudentDAO studentDao,String condition) 
+	{
+		System.out.println("----------------------------");
+		int rows = studentDao.deleteStudentConditionBased(condition);
+		readStudents(studentDao);
+		System.out.println("deleted " + rows + " rows");
+		System.out.println("----------------------------");
+	}
+	
+	public void DeleteAll(StudentDAO studentDao)
+	{
+		int rows = studentDao.deleteAll();
 	}
 }
