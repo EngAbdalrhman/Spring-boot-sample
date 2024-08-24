@@ -5,8 +5,13 @@ import java.util.List;
 import com.softtech.springcoredemo.entity.Student;
 
 public interface StudentDAO {
+	
 	// Create
+	void createTable();
+
+	// Insert
 	void insert(Student student);
+	
 	// Read
 	Student getRecordById(int id);
 	
@@ -30,4 +35,9 @@ public interface StudentDAO {
 	void deleteStudent(int id);
 	public int deleteStudentConditionBased(String condition);
 	int deleteAll();
+	void deleteAllNative();
+
+	// drop table
+	void dropTable();
+	
 }

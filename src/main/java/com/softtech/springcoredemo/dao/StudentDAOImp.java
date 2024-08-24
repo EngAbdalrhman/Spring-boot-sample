@@ -1,6 +1,10 @@
 package com.softtech.springcoredemo.dao;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,13 +26,45 @@ public class StudentDAOImp implements StudentDAO {
 	{
 		em = entityManger;
 	}
+	@Override
+	public void createTable() 
+	{
+		// The issue you're facing is likely due to the fact that the EntityManager is not designed to execute DDL (Data Definition Language) statements like CREATE TABLE. The EntityManager is primarily used for CRUD (Create, Read, Update, Delete) operations on entities.
+		System.out.println("----------------------");
+		System.out.println("Getting Command...");
+		String SQLCommand = "";
+		String Path = "./DB_Query/02-student-tracker.sql";
+		 try {
+	            File myFile = new File(Path);
+	            Scanner myReader = new Scanner(myFile);
+	            while (myReader.hasNextLine()) {
+	                String data = myReader.nextLine();
+	                SQLCommand += data;
+	                SQLCommand += "\n";
+	                //System.out.println(data);
+	            }
+	            myReader.close();
+	        } catch (FileNotFoundException e) {
+	            System.out.println("An error occurred.");
+	            e.printStackTrace();
+	        }
+		 System.out.println(SQLCommand);
+		 System.out.println("Posting Command...");
+		 Query nativeQuery = em.createNativeQuery(SQLCommand);
+		 nativeQuery.executeUpdate();
+		 System.out.println(nativeQuery);
+		 System.out.println("Created.. Done ^^");
+		 System.out.println("---------------------------");
+	}
 	
+	// Insert
 	@Override
 	@Transactional
 	public void insert(Student student) {
 		em.persist(student);
 	}
-
+	
+	// Read
 	@Override
 	public Student getRecordById(int id) {
 		return em.find(Student.class, id);
@@ -156,11 +192,25 @@ public class StudentDAOImp implements StudentDAO {
 	@Transactional
 	public int deleteAll() {
 		int numRowsDeleted = em.createQuery("Delete from Student").executeUpdate(); 
-		// Reset Id Counter
+		// Reset Id Counter same as Truncate
 		Query nativeQuery = em.createNativeQuery("ALTER TABLE student_tracker.student AUTO_INCREMENT = 1");
 		nativeQuery.executeUpdate();
 		System.out.println(nativeQuery);
 		return numRowsDeleted;
+	}
+	
+	@Override
+	@Transactional
+	public void deleteAllNative() {
+		
+		Query nativeQuery = em.createNativeQuery("Truncate student_tracker.student");
+		nativeQuery.executeUpdate();
+	}
+	@Override
+	@Transactional
+	public void dropTable() {
+		Query nativeQuery = em.createNativeQuery("DROP TABLE student_tracker.student");
+		nativeQuery.executeUpdate();
 	}
 	
 }

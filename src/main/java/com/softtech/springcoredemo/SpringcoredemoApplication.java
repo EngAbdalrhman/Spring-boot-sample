@@ -23,7 +23,7 @@ public class SpringcoredemoApplication {
 	public CommandLineRunner commandLineRunner (StudentDAO studentDao) {
 	return runner -> {
 		// ADD DAO Code
-		createStudent(studentDao);
+//		createStudent(studentDao);
 //		readStudent(studentDao,1);
 //		readStudent(studentDao,2);
 //		readStudents(studentDao);
@@ -39,10 +39,12 @@ public class SpringcoredemoApplication {
 //		updateStudent(studentDao,2,metaData);
 //		updateStudentFirstName(studentDao,2,"Ahmed");
 //		bulkupdateStudentLastName(studentDao,"Mahmoud");
-//		DeleteStudent(studentDao, 4);
-//		DeleteStudent(studentDao,"firstName = 'Ahmed'");
-//		DeleteAll(studentDao);
-		
+//		deleteStudent(studentDao, 4);
+//		deleteStudent(studentDao,"firstName = 'Ahmed'");
+//		deleteAll(studentDao);
+//		deleteAllNative(studentDao);
+//		drop(studentDao);
+//		studentDao.createTable();
 	};
 
 	}
@@ -136,7 +138,7 @@ public class SpringcoredemoApplication {
 	
 	// Delete
 	
-	public void DeleteStudent(StudentDAO studentDao,int id) 
+	public void deleteStudent(StudentDAO studentDao,int id) 
 	{
 		System.out.println("----------------------------");
 		studentDao.deleteStudent(id);
@@ -144,7 +146,7 @@ public class SpringcoredemoApplication {
 		System.out.println("----------------------------");
 	}
 	
-	public void DeleteStudent(StudentDAO studentDao,String condition) 
+	public void deleteStudent(StudentDAO studentDao,String condition) 
 	{
 		System.out.println("----------------------------");
 		int rows = studentDao.deleteStudentConditionBased(condition);
@@ -153,8 +155,16 @@ public class SpringcoredemoApplication {
 		System.out.println("----------------------------");
 	}
 	
-	public void DeleteAll(StudentDAO studentDao)
+	public void deleteAll(StudentDAO studentDao)
 	{
 		int rows = studentDao.deleteAll();
+	}
+	public void deleteAllNative(StudentDAO studentDao)
+	{
+		studentDao.deleteAllNative();
+	}
+	public void drop(StudentDAO studentDao)
+	{
+		studentDao.dropTable();
 	}
 }
